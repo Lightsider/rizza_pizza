@@ -24,11 +24,11 @@
                                     <tbody>
                                     @foreach($orders as $key => $item)
                                         <tr>
-                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $item->id }}</td>
                                             <td>{{ implode(",", array_column($item->getProducts(),"title")) }}</td>
                                             <td>{{ $item->address }}</td>
                                             <td>{{ $item->additional_information }}</td>
-                                            <td>{{ $cart->cost($item->total) }} {{$cart->currency()}}</td>
+                                            <td>{{ $item->total }} {{$cart->currency()}}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
