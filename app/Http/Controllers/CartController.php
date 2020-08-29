@@ -31,7 +31,7 @@ class CartController extends Controller
         $cart = new Cart($request);
         $item = Product::find($request->get('product_id'));
         if(!empty($item)) {
-            $data = $cart->addItem($item);
+            $data = $cart->addItem($item,1,$request);
             return response()->json(["message" => __("Product added to cart"),"data" => $data]);
         }
         return response()->setStatusCode(404)->json(["message" => "Product not found"]);
@@ -50,7 +50,7 @@ class CartController extends Controller
         $cart = new Cart($request);
         $item = Product::find($request->get('product_id'));
         if(!empty($item)) {
-            $data = $cart->deleteItem($item);
+            $data = $cart->deleteItem($item,1,$request);
             return response()->json(["message" => __("Product remove from cart"),"data" => $data]);
         }
         return response()->setStatusCode(404)->json(["message" => "Product not found"]);

@@ -35,6 +35,7 @@ class Cart
     function __construct(Request $request)
     {
         $this->session = $request->session();
+        $this->currency = $request->session()->get('currency') ?? '$';
 
         $this->code = $this->session->get('cart.code');
         if (is_null($this->code)) {
@@ -183,6 +184,7 @@ class Cart
      */
     public function addItem($product, $quantity = 1)
     {
+        $cart = new Cart(request());
         if($this->code)
             $item = CartItem::where("code",$this->code)->where("product_id",$product->id)->first();
 
@@ -195,7 +197,7 @@ class Cart
                 "items" => $this->items(),
                 "total" => $this->total(),
                 "new_item" => $item,
-                "currency" => "$"
+                "currency" => $cart->currency()
             ];
 
             return $result;
@@ -218,7 +220,7 @@ class Cart
             "items" => $this->items(),
             "total" => $this->total(),
             "new_item" => $newItem,
-            "currency" => "$"
+            "currency" => $cart->currency()
         ];
 
         return $result;
@@ -227,7 +229,7 @@ class Cart
 
     public function deleteItem(Product $product, $quantity = 1)
     {
-
+        $cart = new Cart(request());
         $condition = [ 'product_id' => $product->id ];
 
         $deleted_item = CartItem::where("code",$this->code)->where($condition)->first();
@@ -241,7 +243,7 @@ class Cart
                 "items" => $this->items(),
                 "total" => $this->total(),
                 "new_item" => $deleted_item,
-                "currency" => "$"
+                "currency" => $cart->currency()
             ];
 
             return $result;
@@ -256,9 +258,9 @@ class Cart
         $result = [
             "count" => $this->count(),
             "items" => $this->items(),
-            "total" => $this->total(),
+            "total" =>$this->total(),
             "new_item" => $deleted_item,
-            "currency" => "$"
+            "currency" => $cart->currency()
         ];
 
         return $result;
